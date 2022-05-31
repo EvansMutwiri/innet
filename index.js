@@ -1,10 +1,28 @@
 import {Navigation} from 'react-native-navigation';
-//import {AppRegistry} from 'react-native';
 import App from './App';
-//import {name as appName} from './app.json';
+import {Provider} from 'react-redux';
+import {store} from './src/app/store';
+import React from 'react';
 
-//AppRegistry.registerComponent(appName, () => App);
-Navigation.registerComponent('com.myApp.WelcomeScreen', () => App);
+Navigation.registerComponent('com.myApp.WelcomeScreen', () => props => (
+  <Provider store={store}>
+    <App />
+  </Provider>
+));
+
+Navigation.setDefaultOptions({
+  topBar: {
+    background: {
+      color: '#F44336',
+    },
+    title: {
+      color: '#FFFFFF',
+      text: 'Fetch',
+      fontFamily: 'helvetica',
+      fontWeight: 'bold',
+    },
+  },
+});
 
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setRoot({
