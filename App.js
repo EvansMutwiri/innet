@@ -8,9 +8,12 @@ import {
 } from 'react-native';
 import React from 'react';
 import axios from 'axios';
+import {ActivityIndicator, Colors} from 'react-native-paper';
+import Details from './src/components/Details';
+import {Navigation} from 'react-native-navigation';
 
-const App = () => {
-  const [data, setData] = React.useState([]);
+const App = props => {
+  const [posts, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
@@ -22,8 +25,27 @@ const App = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  // let fetchComments = id => {
+  //   setLoading(true);
+  //   axios
+  //     .get(`https://jsonplaceholder.typicode.com/comments?postId=${id}`)
+  //     .then(({items}) => console.log(items))
+  //     .catch(err => console.log('Error caught', err))
+  //     .finally(() => setLoading(false));
+  // };
+
   const renderItem = ({item}) => (
-    <TouchableOpacity onPress={alert(item.id)}>
+    <TouchableOpacity
+      style={styles.item}
+      onPress={() => {
+        // alert(item.id);
+        // fetchComments(item.id);
+        Navigation.push('AppStack', {
+          component: {
+            name: 'DetailsScreen',
+          },
+        });
+      }}>
       <View style={styles.post}>
         <View style={styles.postheader}>
           <Text style={styles.id}>{item.id} - </Text>
@@ -38,9 +60,9 @@ const App = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
         {loading ? (
-          () => <ActivityIndicatorView />
+          () => <ActivityIndicator animating={true} color={Colors.red800} />
         ) : (
-          <FlatList data={data} renderItem={renderItem} />
+          <FlatList data={posts} renderItem={renderItem} />
         )}
       </View>
     </SafeAreaView>
@@ -50,6 +72,21 @@ const App = () => {
 export default App;
 
 const styles = StyleSheet.create({
+  item: {
+    flex: 1,
+    margin: 10,
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
   post: {
     margin: 4,
   },
