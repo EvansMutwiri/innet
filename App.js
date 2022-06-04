@@ -9,7 +9,6 @@ import {
 import React from 'react';
 import axios from 'axios';
 import {ActivityIndicator, Colors} from 'react-native-paper';
-import Details from './src/components/Details';
 import {Navigation} from 'react-native-navigation';
 
 const App = props => {
@@ -25,15 +24,6 @@ const App = props => {
       .finally(() => setLoading(false));
   }, []);
 
-  // let fetchComments = id => {
-  //   setLoading(true);
-  //   axios
-  //     .get(`https://jsonplaceholder.typicode.com/comments?postId=${id}`)
-  //     .then(({items}) => console.log(items))
-  //     .catch(err => console.log('Error caught', err))
-  //     .finally(() => setLoading(false));
-  // };
-
   const renderItem = ({item}) => (
     <TouchableOpacity
       style={styles.item}
@@ -43,6 +33,9 @@ const App = props => {
         Navigation.push('AppStack', {
           component: {
             name: 'DetailsScreen',
+            passProps: {
+              id: item,
+            },
           },
         });
       }}>
